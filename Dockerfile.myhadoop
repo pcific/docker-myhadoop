@@ -1,0 +1,27 @@
+FROM pcific/mybase
+
+MAINTAINER pcific.chan@gmail.com
+
+RUN apt-get update && apt-get install -y iputils-ping 
+# RUN apt-get update && apt-get install -y openjdk-8-jdk && ln -sf /usr/lib/jvm/java-8-openjdk-amd64 /jdk180 
+
+ADD hadoop-2.8.3.tar.gz /
+RUN mv /hadoop-2.8.3 /hadoop && chown -R root:root /hadoop && \
+  echo '. /vms/setEnv.sh 2>/dev/null' >>/root/.profile &&  echo '. /vms/setEnv.sh 2>/dev/null' >>/root/.bashrc && \
+  rm -rf /hadoop/share/doc/* && rm -rf /hadoop/*.txt && rm -rf /hadoop/bin/*.cmd && rm -rf /hadoop/sbin/*.cmd \ 
+  echo ''
+  
+ENV JAVA_HOME=/jdk180 \
+    HADOOP_HOME=/hadoop \
+    HADOOP_PREFIX=/haoop \
+    PATH="/jdk180/bin:/hadoop/bin:/hadoop/sbin:${PATH}" \
+    HADOOP_CONF_DIR=/hadoop/conf \
+    YARN_CONF_DIR=/hadoop/conf
+
+WORKDIR /hadoop
+
+CMD ["bash" ]
+    
+
+
+
